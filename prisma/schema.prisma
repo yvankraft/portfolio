@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id         String        @id @default(cuid())
+  title      String
+  slug       String        @unique
+  excerpt    String
+  content    String
+  coverImage String?
+  techs      String[]
+  repoUrl    String?
+  liveUrl    String?
+  featured   Boolean       @default(false)
+  status     ProjectStatus @default(DRAFT)
+  order      Int           @default(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  body      String
+  status    MessageStatus @default(NEW)
+  reply     String?
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+}
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  content   String
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String?
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model Experience {
+  id        String   @id @default(cuid())
+  role      String
+  company   String
+  period    String
+  summary   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
