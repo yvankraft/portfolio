@@ -15,7 +15,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+export function Navbar({ showAdmin }: { showAdmin?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -36,6 +36,15 @@ export function Navbar() {
           {link.label}
         </Link>
       ))}
+      {showAdmin && (
+        <Link
+          href="/admin"
+          onClick={onClick}
+          className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
+        >
+          Admin
+        </Link>
+      )}
     </>
   );
 
